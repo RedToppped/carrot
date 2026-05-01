@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Carrot GMS</title>
+  <link rel="icon" href="https://i.ibb.co/B5j9YjPg/pixilart-drawing-2.png">
+  <!-- Lucide Icons for high-quality logos -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    :root {
+      --bg-color: #1a0a00; 
+      --side-bg: rgba(15, 10, 5, 0.85);
+      --accent-color: #ff8800;
+      --accent-glow: rgba(255, 136, 0, 0.25);
+      --border: rgba(255, 255, 255, 0.05);
+      --font-main: 'Montserrat', sans-serif;
+    }
+
+    body, html {
+      margin: 0; padding: 0; width: 100%; height: 100%;
+      background: radial-gradient(circle at center, #2b1200 0%, #050200 100%);
+      color: #fff; font-family: var(--font-main);
+      display: flex; overflow: hidden;
+    }
+
+    canvas#bg { position: fixed; top: 0; left: 0; z-index: 0; pointer-events: none; }
+
+    .sidebar {
+      width: 70px; height: 100vh; background: var(--side-bg);
+      border-right: 1px solid var(--border); backdrop-filter: blur(20px);
+      display: flex; flex-direction: column; align-items: center; padding: 25px 0; z-index: 10;
+    }
+
+    .logo-link { margin-bottom: 40px; cursor: pointer; transition: transform 0.3s ease; }
+    .logo-link:hover { transform: scale(1.1) rotate(5deg); }
+
+    .nav-tabs { display: flex; flex-direction: column; gap: 20px; width: 100%; align-items: center; }
+
+    .tab-btn {
+      width: 48px; height: 48px; display: flex; justify-content: center; align-items: center;
+      border-radius: 12px; cursor: pointer; color: rgba(255, 255, 255, 0.3);
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); background: transparent; border: 1px solid transparent;
+    }
+
+    .tab-btn:hover { color: #fff; background: rgba(255, 136, 0, 0.08); border-color: rgba(255, 136, 0, 0.1); }
+    
+    .tab-btn.active {
+      color: var(--accent-color); background: var(--accent-glow);
+      border-color: rgba(255, 136, 0, 0.3); box-shadow: 0 0 20px rgba(255, 136, 0, 0.15);
+    }
+
+    .tab-btn.bottom { margin-top: auto; margin-bottom: 10px; }
+
+    .main-wrapper { flex: 1; position: relative; z-index: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+
+    .hero-center { text-align: center; transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+    .hero-center h1 { font-size: 4.5rem; margin: 0; font-weight: 800; letter-spacing: -3px; text-shadow: 0 0 30px rgba(255, 136, 0, 0.4); }
+    .hero-center p.subtitle { margin-top: 5px; color: var(--accent-color); font-size: 0.8rem; letter-spacing: 5px; text-transform: uppercase; font-weight: 600; opacity: 0.8; }
+
+    /* New Stealth Button Style */
+    .cloak-btn {
+      margin-top: 20px;
+      padding: 10px 24px;
+      background: rgba(255, 136, 0, 0.05);
+      border: 1px solid rgba(255, 136, 0, 0.4);
+      color: var(--accent-color);
+      border-radius: 6px;
+      font-family: var(--font-main);
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .cloak-btn:hover {
+      background: var(--accent-glow);
+      border-color: var(--accent-color);
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(255, 136, 0, 0.2);
+    }
+
+    .quote-box {
+      margin-top: 30px; font-style: italic; color: rgba(255, 255, 255, 0.5);
+      font-size: 1rem; font-weight: 400; max-width: 500px; line-height: 1.5;
+      border-left: 2px solid var(--accent-color); padding-left: 20px; min-height: 1.5em;
+      display: flex; align-items: center;
+    }
+
+    .cursor {
+      display: inline-block; width: 2px; height: 1.2em;
+      background-color: var(--accent-color); margin-left: 5px;
+      vertical-align: middle; animation: blink 0.8s infinite;
+    }
+    
+    .cursor.hidden { display: none; }
+
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+    .content-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 2, 0, 0.95); display: none; opacity: 0; transition: opacity 0.5s ease; }
+    iframe { width: 100%; height: 100%; border: none; }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&display=swap" rel="stylesheet">
+</head>
+<body onclick="startAudio()">
+
+  <canvas id="bg"></canvas>
+
+  <audio id="windSfx" loop>
+    <source src="https://www.soundjay.com/nature/wind-01.mp3" type="audio/mpeg">
+  </audio>
+
+  <aside class="sidebar">
+    <div class="logo-link" onclick="goHome()">
+      <img src="https://i.ibb.co/B5j9YjPg/pixilart-drawing-2.png" width="42" height="42">
+    </div>
+    <nav class="nav-tabs">
+      <div class="tab-btn" title="Games" onclick="openPage('games.html', this)">
+        <i data-lucide="gamepad-2"></i>
+      </div>
+      <div class="tab-btn" title="About" onclick="openPage('about.html', this)">
+        <i data-lucide="user"></i>
+      </div>
+      <div class="tab-btn bottom" title="Settings">
+        <i data-lucide="settings"></i>
+      </div>
+    </nav>
+  </aside>
+
+  <main class="main-wrapper">
+    <div class="hero-center" id="hero">
+      <h1>carrot.</h1>
+      <p class="subtitle">In Development, expect further updates.</p>
+      
+      <!-- New Stealth Mode Button -->
+      <button class="cloak-btn" onclick="autoCloak()">Enter Stealth Mode</button>
+
+      <div class="quote-box">
+        <span id="textTarget"></span><span id="cursor" class="cursor"></span>
+      </div>
+    </div>
+    <div class="content-layer" id="content">
+      <iframe id="frame" src=""></iframe>
+    </div>
+  </main>
+
+  <script>
+    lucide.createIcons();
+
+    let audioStarted = false;
+    function startAudio() {
+      if (!audioStarted) {
+        const wind = document.getElementById('windSfx');
+        wind.volume = 0.2;
+        wind.play();
+        audioStarted = true;
+      }
+    }
+
+    // Stealth Mode Functionality
+    function autoCloak() {
+      const url = window.location.href;
+      const win = window.open('about:blank', '_blank');
+
+      if (!win || win.closed) {
+        alert('Pop-up blocked! Please allow pop-ups to use Stealth Mode.');
+        return;
+      }
+
+      const doc = win.document;
+      const iframe = doc.createElement('iframe');
+
+      iframe.style.width = "100vw";
+      iframe.style.height = "100vh";
+      iframe.style.border = "none";
+      iframe.style.position = "fixed";
+      iframe.style.top = "0";
+      iframe.style.left = "0";
+      iframe.src = url;
+
+      doc.body.style.margin = "0";
+      doc.body.style.padding = "0";
+      doc.body.style.overflow = "hidden";
+      doc.body.appendChild(iframe);
+
+      // Redirect this tab to hide history
+      window.location.replace("https://google.com");
+    }
+
+    const quotes = [
+      "I love femboys I love them all the wayyy - Studd",
+      "Disgrace is just something you need to honor. - RedTop",
+      "haha - Pancake", 
+      "I'M GONNA DIDDLE YOU! - Studd"
+    ];
+
+    function typeWriter(text, i, target) {
+      if (i < text.length) {
+        document.getElementById(target).innerHTML += text.charAt(i);
+        setTimeout(() => typeWriter(text, i + 1, target), 75);
+      } else {
+        document.getElementById('cursor').classList.add('hidden');
+      }
+    }
+
+    window.onload = () => {
+      const selected = quotes[Math.floor(Math.random() * quotes.length)];
+      typeWriter(`"${selected}"`, 0, "textTarget");
+    };
+
+    const canvas = document.getElementById('bg'), ctx = canvas.getContext('2d');
+    let w, h, particles = [];
+    const init = () => {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+      particles = Array(100).fill().map(() => ({
+        x: Math.random() * w, y: Math.random() * h, 
+        vx: (Math.random() - 0.5) * 0.5, vy: (Math.random() - 0.5) * 0.5, r: Math.random() * 2
+      }));
+    };
+    window.onresize = init; init();
+
+    (function render() {
+      ctx.clearRect(0,0,w,h);
+      particles.forEach((p, i) => {
+        p.x += p.vx; p.y += p.vy;
+        if(p.x < 0 || p.x > w) p.vx *= -1;
+        if(p.y < 0 || p.y > h) p.vy *= -1;
+        ctx.fillStyle = "rgba(255, 136, 0, 0.4)";
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill();
+        for(let j = i + 1; j < particles.length; j++) {
+          let p2 = particles[j];
+          let dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+          if(dist < 120) {
+            ctx.strokeStyle = `rgba(255, 136, 0, ${0.15 - dist/800})`;
+            ctx.lineWidth = 0.6;
+            ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y); ctx.stroke();
+          }
+        }
+      });
+      requestAnimationFrame(render);
+    })();
+
+    function openPage(url, el) {
+      const hero = document.getElementById('hero'), content = document.getElementById('content'), frame = document.getElementById('frame');
+      hero.style.opacity = '0';
+      hero.style.transform = 'translateY(-15px)';
+      setTimeout(() => {
+        hero.style.display = 'none';
+        content.style.display = 'block';
+        setTimeout(() => content.style.opacity = '1', 50);
+        frame.src = url;
+      }, 400);
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    function goHome() {
+      const hero = document.getElementById('hero'), content = document.getElementById('content');
+      content.style.opacity = '0';
+      setTimeout(() => {
+        content.style.display = 'none';
+        hero.style.display = 'block';
+        setTimeout(() => {
+          hero.style.opacity = '1';
+          hero.style.transform = 'translateY(0)';
+        }, 50);
+      }, 400);
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    }
+  </script>
+</body>
+</html>

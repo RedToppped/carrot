@@ -1,0 +1,60 @@
+{
+  "games": [
+    {
+      "id": "badparenting",
+      "title": "Bad Parenting",
+      "description": "Nah, I'm not spoiling it for you, don't worry.",
+      "icon": "https://upload.wikimedia.org/wikipedia/en/5/51/Minecraft_cover.png",
+      "badge": "Port"
+    },
+    {
+      "id": "evilglitch",
+      "title": "Evil Glitch",
+      "description": "A strategy game where you're a circle, and you move boxes around.",
+      "icon": "https://upload.wikimedia.org/wikipedia/en/5/51/Minecraft_cover.png",
+      "badge": "Web HTML"
+    },
+    {
+      "id": "itsrainingboxes",
+      "title": "It's Raining... Boxes?!",
+      "description": "ANOTHER, strategy game where you climb boxes and reach the peakest you can!",
+      "icon": "https://upload.wikimedia.org/wikipedia/en/5/51/Minecraft_cover.png",
+      "badge": "Web HTML"
+    },
+    {
+      "id": "spacebarclicker",
+      "title": "Spacebar Clicker",
+      "description": "CLICK CLICK CLICK CLICK CLICK",
+      "icon": "https://upload.wikimedia.org/wikipedia/en/5/51/Minecraft_cover.png",
+      "badge": "Web HTML"
+    },
+    {
+      "id": "buildabigarmy",
+      "title": "Build A Big Army",
+      "description": "Я ненавижу эту игру. Аллах Акбар! (dont ask what it means its really offensive lmao)",
+      "icon": "https://upload.wikimedia.org/wikipedia/en/5/51/Minecraft_cover.png",
+      "badge": "Port"
+    },
+        {
+      "id": "justoneboss",
+      "title": "Just One Boss",
+      "description": "Survival Game, it's only one boss.  Can you beat him?",
+      "icon": "https://upload.wikimedia.org/wikipedia/en/5/51/Minecraft_cover.png",
+      "badge": "Web HTML"
+    },
+    {
+      "id": "paperio",
+      "title": "Paper.io 2",
+      "description": "Self explanatory.  Who DOESN'T know this?",
+      "icon": "https://upload.wikimedia.org/wikipedia/en/5/51/Minecraft_cover.png",
+      "badge": "Web HTML"
+    },
+        {
+      "id": "eaglercraft",
+      "title": "EaglerCraft",
+      "description": "Basically Minecraft.  This is a very rare game to own as an HTML because it wasn't really downloaded.",
+      "icon": "https://upload.wikimedia.org/wikipedia/en/5/51/Minecraft_cover.png",
+      "badge": "Port"
+    }
+  ]
+}
